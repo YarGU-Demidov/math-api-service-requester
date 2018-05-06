@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+
+        <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+        <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+        <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+
+        <AssemblyVersion>1.1.0.0</AssemblyVersion>
+        <FileVersion>1.1.0.0</FileVersion>
+        <Version>1.1.0.0</Version>
+
+        <PackageId>MathSite.Common.ApiServiceRequester</PackageId>
+
+        <Authors>mokeev1995</Authors>
+        <Copyright>mokeev1995</Copyright>
+        <Company>Yaroslavl State University</Company>
+        <Product>MathSite</Product>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\MathSite.Common.ApiServiceRequester.Abstractions\MathSite.Common.ApiServiceRequester.Abstractions.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="11.0.2"/>
+    </ItemGroup>
+</Project>
