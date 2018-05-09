@@ -1,24 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
-
-        <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-        <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-        <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-
-        <AssemblyVersion>1.1.0.0</AssemblyVersion>
-        <FileVersion>1.1.0.0</FileVersion>
-        <Version>1.1.0.0</Version>
-
-        <PackageId>MathSite.Common.ApiServiceRequester.Abstractions</PackageId>
-
-        <Authors>mokeev1995</Authors>
-        <Copyright>mokeev1995</Copyright>
-        <Company>Yaroslavl State University</Company>
-        <Product>MathSite</Product>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.0.2"/>
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <Version>1.1.0.0</Version>
+    <PackageId>MathSite.Common.ApiServiceRequester.Abstractions</PackageId>
+    <Authors>mokeev1995</Authors>
+    <Copyright>mokeev1995</Copyright>
+    <Company>Yaroslavl State University</Company>
+    <Product>MathSite</Product>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.0.2" />
+  </ItemGroup>
 </Project>

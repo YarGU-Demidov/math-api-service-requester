@@ -9,47 +9,26 @@ namespace MathSite.Common.ApiServiceRequester
 {
     public class ApiRequester : IApiRequester
     {
-        private readonly IConfiguration _configuration;
         private readonly IServiceUriBuilder _serviceUriBuilder;
-        public HttpContext Context { get; }
+        private readonly IAuthCookieRetriever _authCookieRetriever;
 
         public ApiRequester(
-            IHttpContextAccessor contextAccessor, 
-            IConfiguration configuration, 
-            IServiceUriBuilder serviceUriBuilder
+            IServiceUriBuilder serviceUriBuilder,
+            IAuthCookieRetriever authCookieRetriever
         )
         {
-            _configuration = configuration;
             _serviceUriBuilder = serviceUriBuilder;
-            Context = contextAccessor.HttpContext;
+            _authCookieRetriever = authCookieRetriever;
         }
 
         public virtual async Task<T> GetAsync<T>(IApiEndpoint endpoint, string path)
-            where T : class
         {
-            var authCookie = GetAuthCookie();
+            var authCookie = _authCookieRetriever.GetAuthCookie();
             var result = await endpoint.GetAsync(path, authCookie, _serviceUriBuilder);
 
             return !result.IsSuccessStatusCode
-                ? null
+                ? default
                 : JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
-        }
-
-        private Cookie GetAuthCookie()
-        {
-            const string authCookieKey = "Authorization";
-            
-            var cookies = Context.Request.Cookies;
-            
-            var hasAuthCookie = cookies.ContainsKey(authCookieKey);
-
-            if (!hasAuthCookie)
-                return null;
-
-            var coockieValue = cookies[authCookieKey];
-            var siteName = _configuration[ConfigurationConstants.SiteUrlKey];
-
-            return new Cookie(authCookieKey, coockieValue, "/", siteName) {HttpOnly = true};
         }
     }
 }

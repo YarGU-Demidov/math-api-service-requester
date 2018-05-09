@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5B4DE77A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UriBuildersTests", "tests\UriBuildersTests\UriBuildersTests.csproj", "{1158B6CB-464F-455A-AB4C-741AFC5BAA26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiServiceRequesterTests", "tests\ApiServiceRequesterTests\ApiServiceRequesterTests.csproj", "{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +34,15 @@ Global
 		{1158B6CB-464F-455A-AB4C-741AFC5BAA26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1158B6CB-464F-455A-AB4C-741AFC5BAA26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1158B6CB-464F-455A-AB4C-741AFC5BAA26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D4AFD967-CF32-423F-A83B-C7514285E040} = {24F80903-E544-4B73-A1D6-F106F0EFB915}
 		{C5F3BC35-8D65-400A-AAFF-B233C83706BF} = {24F80903-E544-4B73-A1D6-F106F0EFB915}
 		{1158B6CB-464F-455A-AB4C-741AFC5BAA26} = {5B4DE77A-EC33-48F9-A6D1-73210D3573E9}
+		{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1} = {5B4DE77A-EC33-48F9-A6D1-73210D3573E9}
 	EndGlobalSection
 EndGlobal

@@ -8,8 +8,6 @@ namespace MathSite.Common.ApiServiceRequester
 {
     public class ApiEndpoint : IApiEndpoint
     {
-        private ApiEndpointConfiguration Configuration { get; }
-
         private readonly HttpClient _client;
         private readonly HttpClientHandler _clientHandler;
 
@@ -19,6 +17,8 @@ namespace MathSite.Common.ApiServiceRequester
             _clientHandler = new HttpClientHandler();
             _client = new HttpClient(_clientHandler);
         }
+
+        private ApiEndpointConfiguration Configuration { get; }
 
         public virtual async Task<HttpResponseMessage> GetAsync(
             string path,
@@ -31,9 +31,9 @@ namespace MathSite.Common.ApiServiceRequester
 
             SetCookie(authCookie);
 
-            return await _client.GetAsync(
-                serviceUriBuilder.FromPath(path, Configuration)
-            );
+            var uri = serviceUriBuilder.FromPath(path, Configuration);
+            
+            return await _client.GetAsync(uri);
         }
 
         public virtual async Task<HttpResponseMessage> PostAsync(
@@ -56,10 +56,7 @@ namespace MathSite.Common.ApiServiceRequester
 
         private void SetCookie(Cookie authCookie)
         {
-            if (authCookie == null)
-            {
-                return;
-            }
+            if (authCookie == null) return;
 
             _clientHandler.CookieContainer.Add(authCookie);
         }

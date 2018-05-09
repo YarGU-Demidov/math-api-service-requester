@@ -1,30 +1,27 @@
 ﻿using System;
 using MathSite.Common.ApiServiceRequester.Abstractions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace MathSite.Common.ApiServiceRequester.UriBuilders
 {
     public class BeforeDomainServiceUriBuilder : IServiceUriBuilder
     {
-        private readonly IConfiguration _configuration;
+        private readonly AuthConfig _authConfig;
 
-        public BeforeDomainServiceUriBuilder(IConfiguration configuration)
+        public BeforeDomainServiceUriBuilder(IOptions<AuthConfig> options)
         {
-            _configuration = configuration;
+            _authConfig = options.Value;
         }
 
         public Uri FromPath(string path, ApiEndpointConfiguration endpointConfiguration)
         {
-            var siteUrl = _configuration[ConfigurationConstants.SiteUrlKey];
-            var useHttps = JsonConvert.DeserializeObject<bool>(_configuration[ConfigurationConstants.UseHttpsKey]);
-
-            var uriBuilder = new UriBuilder(siteUrl)
+            var uriBuilder = new UriBuilder(_authConfig.SiteUrl)
             {
-                Scheme = useHttps ? "https" : "http",
+                Scheme = _authConfig.UseHttps ? "https" : "http",
                 Path = path
             };
-            
             uriBuilder.Host = $"{endpointConfiguration.EndpointAlias}.{uriBuilder.Host}";
 
             return uriBuilder.Uri;

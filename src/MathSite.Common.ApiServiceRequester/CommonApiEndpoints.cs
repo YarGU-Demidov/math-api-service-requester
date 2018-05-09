@@ -4,12 +4,6 @@ namespace MathSite.Common.ApiServiceRequester
 {
     public class CommonApiEndpoints : ICommonApiEndpoints
     {
-        public IApiEndpoint UsersApi { get; }
-        public IApiEndpoint PersonsApi { get; }
-        public IApiEndpoint GroupsApi { get; }
-        public IApiEndpoint ProfessorsApi { get; }
-        public IApiEndpoint AuthApi { get; }
-
         public CommonApiEndpoints()
         {
             UsersApi = new ApiEndpoint(new ApiEndpointConfiguration("users"));
@@ -18,5 +12,11 @@ namespace MathSite.Common.ApiServiceRequester
             ProfessorsApi = new ApiEndpoint(new ApiEndpointConfiguration("professors"));
             AuthApi = new ApiEndpoint(new ApiEndpointConfiguration("auth"));
         }
+
+        public IApiEndpoint UsersApi { get; }
+        public IApiEndpoint PersonsApi { get; }
+        public IApiEndpoint GroupsApi { get; }
+        public IApiEndpoint ProfessorsApi { get; }
+        public IApiEndpoint AuthApi { get; }
     }
 }
