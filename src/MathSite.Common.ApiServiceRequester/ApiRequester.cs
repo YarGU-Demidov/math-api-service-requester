@@ -1,16 +1,13 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MathSite.Common.ApiServiceRequester.Abstractions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
 namespace MathSite.Common.ApiServiceRequester
 {
     public class ApiRequester : IApiRequester
     {
-        private readonly IServiceUriBuilder _serviceUriBuilder;
         private readonly IAuthCookieRetriever _authCookieRetriever;
+        private readonly IServiceUriBuilder _serviceUriBuilder;
 
         public ApiRequester(
             IServiceUriBuilder serviceUriBuilder,

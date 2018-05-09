@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using MathSite.Common.ApiServiceRequester;
 using MathSite.Common.ApiServiceRequester.Abstractions;
 using MathSite.Common.ApiServiceRequester.UriBuilders;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Xunit;
 

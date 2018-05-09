@@ -32,7 +32,7 @@ namespace MathSite.Common.ApiServiceRequester
             SetCookie(authCookie);
 
             var uri = serviceUriBuilder.FromPath(path, Configuration);
-            
+
             return await _client.GetAsync(uri);
         }
 

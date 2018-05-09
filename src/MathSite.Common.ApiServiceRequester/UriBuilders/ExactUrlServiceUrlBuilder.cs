@@ -9,11 +9,11 @@ namespace MathSite.Common.ApiServiceRequester.UriBuilders
         {
             if (string.IsNullOrWhiteSpace(endpointConfiguration.EndpointAddress))
                 throw new ArgumentNullException(endpointConfiguration.EndpointAddress);
-            
+
             var currentPath = new Uri(endpointConfiguration.EndpointAddress).PathAndQuery ?? "";
 
             var newPath = $"{currentPath}/{path}";
-            
+
             return new Uri(new Uri(endpointConfiguration.EndpointAddress), newPath);
         }
     }

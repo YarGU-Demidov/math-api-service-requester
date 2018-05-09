@@ -7,6 +7,8 @@ namespace MathSite.Common.ApiServiceRequester
 {
     public class AuthCookieRetriever : IAuthCookieRetriever
     {
+        private const string AuthCookieKey = "Authorization";
+
         public AuthCookieRetriever(IHttpContextAccessor contextAccessor, IOptions<AuthConfig> options)
         {
             Context = contextAccessor.HttpContext;
@@ -18,19 +20,17 @@ namespace MathSite.Common.ApiServiceRequester
 
         public Cookie GetAuthCookie()
         {
-            const string authCookieKey = "Authorization";
-
             var cookies = Context.Request.Cookies;
 
-            var hasAuthCookie = cookies.ContainsKey(authCookieKey);
+            var hasAuthCookie = cookies.ContainsKey(AuthCookieKey);
 
             if (!hasAuthCookie)
                 return null;
 
-            var coockieValue = cookies[authCookieKey];
+            var coockieValue = cookies[AuthCookieKey];
             var siteName = AuthConfig.SiteUrl;
 
-            return new Cookie(authCookieKey, coockieValue, "/", siteName) {HttpOnly = true};
+            return new Cookie(AuthCookieKey, coockieValue, "/", siteName) {HttpOnly = true};
         }
     }
 }

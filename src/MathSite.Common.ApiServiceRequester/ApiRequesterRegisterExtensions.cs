@@ -16,7 +16,7 @@ namespace MathSite.Common.ApiServiceRequester
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.TryAddSingleton<IServiceUriBuilder, BeforeDomainServiceUriBuilder>();
-            
+
             return services.AddScoped<IApiRequester, ApiRequester>()
                 .AddSingleton<ICommonApiEndpoints, CommonApiEndpoints>();
         }

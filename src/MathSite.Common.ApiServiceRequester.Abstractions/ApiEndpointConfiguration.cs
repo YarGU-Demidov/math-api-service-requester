@@ -13,6 +13,6 @@
         }
 
         public string EndpointAlias { get; set; }
-        public string EndpointAddress { get; set; } 
+        public string EndpointAddress { get; set; }
     }
 }
