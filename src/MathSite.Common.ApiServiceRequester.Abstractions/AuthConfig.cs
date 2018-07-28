@@ -2,7 +2,8 @@
 {
     public class AuthConfig
     {
-        public string SiteUrl { get; set; }
-        public bool UseHttps { get; set; }
+        public string SiteUrl { get; set; } = "localhost";
+        public bool UseHttps { get; set; } = true;
+        public string ServicePathName { get; set; } = "services";
     }
 }

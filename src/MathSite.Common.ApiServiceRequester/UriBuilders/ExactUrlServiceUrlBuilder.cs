@@ -5,7 +5,7 @@ namespace MathSite.Common.ApiServiceRequester.UriBuilders
 {
     public class ExactUrlServiceUrlBuilder : IServiceUriBuilder
     {
-        public Uri FromPath(string path, ApiEndpointConfiguration endpointConfiguration)
+        public Uri FromPath(string path, ApiEndpointConfiguration endpointConfiguration, IApiVersionProvider apiVersionProvider)
         {
             if (string.IsNullOrWhiteSpace(endpointConfiguration.EndpointAddress))
                 throw new ArgumentNullException(endpointConfiguration.EndpointAddress);

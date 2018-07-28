@@ -13,12 +13,18 @@ namespace MathSite.Common.ApiServiceRequester.UriBuilders
             _authConfig = options.Value;
         }
 
-        public Uri FromPath(string path, ApiEndpointConfiguration endpointConfiguration)
+        public Uri FromPath(string path, ApiEndpointConfiguration endpointConfiguration, IApiVersionProvider apiVersionProvider)
         {
+            var apiVersion = apiVersionProvider.GetVersion();
+
+            var apiVersionPath = string.IsNullOrWhiteSpace(apiVersion)
+                ? ""
+                : $"/v{apiVersion}";
+            
             var uriBuilder = new UriBuilder(_authConfig.SiteUrl)
             {
                 Scheme = _authConfig.UseHttps ? "https" : "http",
-                Path = $"services/{endpointConfiguration.EndpointAlias}/{path}"
+                Path = $"{_authConfig.ServicePathName}{apiVersionPath}/{endpointConfiguration.EndpointAlias}/{path}"
             };
 
             return uriBuilder.Uri;

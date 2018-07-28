@@ -3,16 +3,24 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MathSite.Common.ApiServiceRequester.Abstractions;
+using MathSite.Common.ApiServiceRequester.Versions;
 
 namespace MathSite.Common.ApiServiceRequester
 {
     public class ApiEndpoint : IApiEndpoint
     {
+        private readonly IApiVersionProvider _apiVersionProvider;
         private readonly HttpClient _client;
         private readonly HttpClientHandler _clientHandler;
 
         public ApiEndpoint(ApiEndpointConfiguration configuration)
+            : this(configuration, new AnyApiVersionProvider())
         {
+        }
+
+        public ApiEndpoint(ApiEndpointConfiguration configuration, IApiVersionProvider apiVersionProvider)
+        {
+            _apiVersionProvider = apiVersionProvider;
             Configuration = configuration;
             _clientHandler = new HttpClientHandler();
             _client = new HttpClient(_clientHandler);
@@ -31,7 +39,7 @@ namespace MathSite.Common.ApiServiceRequester
 
             SetCookie(authCookie);
 
-            var uri = serviceUriBuilder.FromPath(path, Configuration);
+            var uri = serviceUriBuilder.FromPath(path, Configuration, _apiVersionProvider);
 
             return await _client.GetAsync(uri);
         }
@@ -49,7 +57,7 @@ namespace MathSite.Common.ApiServiceRequester
             SetCookie(authCookie);
 
             return await _client.PostAsync(
-                serviceUriBuilder.FromPath(path, Configuration),
+                serviceUriBuilder.FromPath(path, Configuration, _apiVersionProvider),
                 data
             );
         }

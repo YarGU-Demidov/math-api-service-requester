@@ -1,5 +1,7 @@
+using System;
 using MathSite.Common.ApiServiceRequester.Abstractions;
 using MathSite.Common.ApiServiceRequester.UriBuilders;
+using MathSite.Common.ApiServiceRequester.Versions;
 using Microsoft.Extensions.Options;
 using Xunit;
 
@@ -25,7 +27,19 @@ namespace UriBuildersTests
         {
             const string expected = "http://test.localhost:8000/path";
 
-            var actual = _uriBuilder.FromPath("path", new ApiEndpointConfiguration("test"))
+            var actual = _uriBuilder.FromPath("path", new ApiEndpointConfiguration("test"), new AnyApiVersionProvider())
+                .ToString();
+
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void BuildsCorrectUriWithVersion()
+        {
+            const string expected = "http://test.localhost:8000/v1/path";
+            var apiVersion = new Version(1, 0);
+
+            var actual = _uriBuilder.FromPath("path", new ApiEndpointConfiguration("test"), new SelectedApiVersionProvider(apiVersion))
                 .ToString();
 
             Assert.Equal(expected, actual);

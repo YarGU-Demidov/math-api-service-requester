@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MathSite.Common.ApiServiceRequester.Abstractions;
+using MathSite.Common.ApiServiceRequester.Abstractions.Exceptions;
 using Newtonsoft.Json;
 
 namespace MathSite.Common.ApiServiceRequester
@@ -23,9 +24,15 @@ namespace MathSite.Common.ApiServiceRequester
             var authCookie = _authCookieRetriever.GetAuthCookie();
             var result = await endpoint.GetAsync(path, authCookie, _serviceUriBuilder);
 
-            return !result.IsSuccessStatusCode
-                ? default
-                : JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
+            if (!result.IsSuccessStatusCode)
+            {
+                throw new RequestFailedException(
+                    $"Attempt to load URL \"{result.RequestMessage.RequestUri}\" has failed.",
+                    result
+                );
+            }
+
+            return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
         }
     }
 }
