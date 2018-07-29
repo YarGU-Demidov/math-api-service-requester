@@ -1,7 +1,9 @@
 using System.Net;
 using System.Threading.Tasks;
 using MathSite.Common.ApiServiceRequester;
+using MathSite.Common.ApiServiceRequester.Abstractions;
 using MathSite.Common.ApiServiceRequester.UriBuilders;
+using MathSite.Common.ApiServiceRequester.Versions;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -17,12 +19,6 @@ namespace ApiServiceRequesterTests
 
     public class ApiRequesterTests
     {
-        public ApiRequesterTests()
-        {
-            var testCookie = new Cookie(CookieName, CookieValue, CookiePath, CookieDomain);
-            var testCookieRetriever = new TestCookieRetriever(testCookie);
-            _requester = new ApiRequester(new ExactUrlServiceUrlBuilder(), testCookieRetriever);
-        }
 
         private ApiRequester _requester;
         private const string CookieName = "TestKey";
@@ -34,10 +30,10 @@ namespace ApiServiceRequesterTests
         public async Task CookieWasNotSet()
         {
             var testCookieRetriever = new TestCookieRetriever(null);
-            _requester = new ApiRequester(new ExactUrlServiceUrlBuilder(), testCookieRetriever);
-
             var testApiEndpoint = new TestApiEndpoint(JsonConvert.SerializeObject(true));
-            await _requester.GetAsync<bool>(testApiEndpoint, path: "/");
+            SetRequester(testApiEndpoint, testCookieRetriever);
+
+            await _requester.GetAsync<bool>(new ServiceMethod("a", "b"), null);
 
             var gotCookie = testApiEndpoint.GivenCoockie;
 
@@ -48,7 +44,9 @@ namespace ApiServiceRequesterTests
         public async Task CookieWasSetCorrectly()
         {
             var testApiEndpoint = new TestApiEndpoint(JsonConvert.SerializeObject(true));
-            await _requester.GetAsync<bool>(testApiEndpoint, path: "/");
+            SetRequester(testApiEndpoint);
+            
+            await _requester.GetAsync<bool>(new ServiceMethod("a", "b"), null);
 
             var gotCookie = testApiEndpoint.GivenCoockie;
 
@@ -61,7 +59,8 @@ namespace ApiServiceRequesterTests
         [Fact]
         public async Task CorrectRequest()
         {
-            var result = await _requester.GetAsync<bool>(new TestApiEndpoint("true"), "/");
+            SetRequester(new TestApiEndpoint(JsonConvert.SerializeObject(true)));
+            var result = await _requester.GetAsync<bool>(new ServiceMethod("a", "b"), null);
 
             Assert.True(result);
         }
@@ -77,7 +76,8 @@ namespace ApiServiceRequesterTests
                 EmptyNullableDecimal = null
             };
             var testApiEndpoint = new TestApiEndpoint(JsonConvert.SerializeObject(expected));
-            var result = await _requester.GetAsync<TestClassWithSomeData>(testApiEndpoint, path: "/");
+            SetRequester(testApiEndpoint);
+            var result = await _requester.GetAsync<TestClassWithSomeData>(new ServiceMethod("a", "b"), null);
 
             Assert.NotNull(result);
             Assert.Equal("test valaue", result.Data);
@@ -91,6 +91,13 @@ namespace ApiServiceRequesterTests
             Assert.Equal(CookieValue, gotCookie.Value);
             Assert.Equal(CookiePath, gotCookie.Path);
             Assert.Equal(CookieDomain, gotCookie.Domain);
+        }
+
+        private void SetRequester(IApiEndpoint apiEndpoint, IAuthCookieRetriever authCookieRetriever = null)
+        {
+            var testCookie = new Cookie(CookieName, CookieValue, CookiePath, CookieDomain);
+            var testCookieRetriever = authCookieRetriever ?? new TestCookieRetriever(testCookie);
+            _requester = new ApiRequester(new ExactUrlServiceUrlBuilder(), testCookieRetriever, new TestApiEndpiontFactory(apiEndpoint));
         }
     }
 }
