@@ -8,6 +8,26 @@ namespace MathSite.Common.ApiServiceRequester
 {
     public static class ApiRequesterRegisterExtensions
     {
+        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder>(this IServiceCollection services, IConfiguration authConfigconfigurationSource)
+            where TDomainServiceUriBuilder : class, IServiceUriBuilder
+        {
+            return RegisterDefaultServices<TDomainServiceUriBuilder, ApiEndpointFactory>(services, authConfigconfigurationSource)
+                .AddSingleton(new AnyApiVersionProvider());
+        }
+        
+        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder>(this IServiceCollection services, IConfiguration authConfigconfigurationSource, string apiVersion)
+            where TDomainServiceUriBuilder : class, IServiceUriBuilder
+        {
+            return RegisterDefaultServices<TDomainServiceUriBuilder, ApiEndpointFactory>(services, authConfigconfigurationSource)
+                .AddSingleton(new SelectedApiVersionProvider(apiVersion));
+        }
+        
+        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder>(this IServiceCollection services, IConfiguration authConfigconfigurationSource, Version apiVersion)
+            where TDomainServiceUriBuilder : class, IServiceUriBuilder
+        {
+            return RegisterDefaultServices<TDomainServiceUriBuilder, ApiEndpointFactory>(services, authConfigconfigurationSource)
+                .AddSingleton(new SelectedApiVersionProvider(apiVersion));
+        }
         public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TApiEndpointFactory>(this IServiceCollection services, IConfiguration authConfigconfigurationSource)
             where TDomainServiceUriBuilder : class, IServiceUriBuilder
             where TApiEndpointFactory : class, IApiEndpointFactory
