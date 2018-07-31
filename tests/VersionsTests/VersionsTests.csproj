@@ -28,8 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\MathSite.Common.ApiServiceRequester.Abstractions\MathSite.Common.ApiServiceRequester.Abstractions.csproj" />
-    <ProjectReference Include="..\src\MathSite.Common.ApiServiceRequester\MathSite.Common.ApiServiceRequester.csproj" />
+    <ProjectReference Include="..\..\src\MathSite.Common.ApiServiceRequester.Abstractions\MathSite.Common.ApiServiceRequester.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\MathSite.Common.ApiServiceRequester\MathSite.Common.ApiServiceRequester.csproj" />
   </ItemGroup>
 
 </Project>

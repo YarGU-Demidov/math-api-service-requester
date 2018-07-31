@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UriBuildersTests", "tests\U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiServiceRequesterTests", "tests\ApiServiceRequesterTests\ApiServiceRequesterTests.csproj", "{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionsTests", "VersionsTests\VersionsTests.csproj", "{12165262-568C-4E56-B8FD-AA41130156FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionsTests", "tests\VersionsTests\VersionsTests.csproj", "{12165262-568C-4E56-B8FD-AA41130156FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
