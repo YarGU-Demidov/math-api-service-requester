@@ -1,16 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathSite.Common.ApiServiceRequester", "src\MathSite.Common.ApiServiceRequester\MathSite.Common.ApiServiceRequester.csproj", "{D4AFD967-CF32-423F-A83B-C7514285E040}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathSite.Common.ApiServiceRequester", "src\MathSite.Common.ApiServiceRequester\MathSite.Common.ApiServiceRequester.csproj", "{D4AFD967-CF32-423F-A83B-C7514285E040}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathSite.Common.ApiServiceRequester.Abstractions", "src\MathSite.Common.ApiServiceRequester.Abstractions\MathSite.Common.ApiServiceRequester.Abstractions.csproj", "{C5F3BC35-8D65-400A-AAFF-B233C83706BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathSite.Common.ApiServiceRequester.Abstractions", "src\MathSite.Common.ApiServiceRequester.Abstractions\MathSite.Common.ApiServiceRequester.Abstractions.csproj", "{C5F3BC35-8D65-400A-AAFF-B233C83706BF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{24F80903-E544-4B73-A1D6-F106F0EFB915}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5B4DE77A-EC33-48F9-A6D1-73210D3573E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UriBuildersTests", "tests\UriBuildersTests\UriBuildersTests.csproj", "{1158B6CB-464F-455A-AB4C-741AFC5BAA26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UriBuildersTests", "tests\UriBuildersTests\UriBuildersTests.csproj", "{1158B6CB-464F-455A-AB4C-741AFC5BAA26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiServiceRequesterTests", "tests\ApiServiceRequesterTests\ApiServiceRequesterTests.csproj", "{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiServiceRequesterTests", "tests\ApiServiceRequesterTests\ApiServiceRequesterTests.csproj", "{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionsTests", "VersionsTests\VersionsTests.csproj", "{12165262-568C-4E56-B8FD-AA41130156FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6BAA86D0-C23D-4776-97E5-A50A5676B411}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6BAA86D0-C23D-4776-97E5-A50A5676B411}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6BAA86D0-C23D-4776-97E5-A50A5676B411}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6BAA86D0-C23D-4776-97E5-A50A5676B411}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D4AFD967-CF32-423F-A83B-C7514285E040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D4AFD967-CF32-423F-A83B-C7514285E040}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4AFD967-CF32-423F-A83B-C7514285E040}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -38,11 +39,22 @@ Global
 		{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12165262-568C-4E56-B8FD-AA41130156FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12165262-568C-4E56-B8FD-AA41130156FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12165262-568C-4E56-B8FD-AA41130156FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12165262-568C-4E56-B8FD-AA41130156FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D4AFD967-CF32-423F-A83B-C7514285E040} = {24F80903-E544-4B73-A1D6-F106F0EFB915}
 		{C5F3BC35-8D65-400A-AAFF-B233C83706BF} = {24F80903-E544-4B73-A1D6-F106F0EFB915}
 		{1158B6CB-464F-455A-AB4C-741AFC5BAA26} = {5B4DE77A-EC33-48F9-A6D1-73210D3573E9}
 		{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1} = {5B4DE77A-EC33-48F9-A6D1-73210D3573E9}
+		{12165262-568C-4E56-B8FD-AA41130156FE} = {5B4DE77A-EC33-48F9-A6D1-73210D3573E9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A5F20C94-4ED1-421F-97F5-EC27E67447E0}
 	EndGlobalSection
 EndGlobal

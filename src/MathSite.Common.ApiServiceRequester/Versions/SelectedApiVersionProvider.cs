@@ -19,15 +19,14 @@ namespace MathSite.Common.ApiServiceRequester.Versions
 
         public void SetVersion(string version)
         {
-            _version = version;
+            // version 1.0 should look like 1,
+            // 1.2.0 -> 1.2, etc.
+            _version = version.Replace(".0", "");
         }
         
         public void SetVersion(Version version)
         {
-            // version 1.0 should look like 1,
-            // 1.2.0 -> 1.2, etc.
-            _version = version.ToString()
-                .Replace(".0", "");
+            SetVersion(version.ToString());
         }
         
         public string GetVersion()
