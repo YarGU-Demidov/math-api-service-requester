@@ -1,15 +1,14 @@
-﻿using System.Net;
-using MathSite.Common.ApiServiceRequester.Abstractions;
+﻿using MathSite.Common.ApiServiceRequester.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace MathSite.Common.ApiServiceRequester
 {
-    public class AuthCookieRetriever : IAuthCookieRetriever
+    public class AuthDataRetriever : IAuthDataRetriever
     {
         private string _authCookieKey = "Authorization";
 
-        public AuthCookieRetriever(IHttpContextAccessor contextAccessor, IOptions<AuthConfig> options)
+        public AuthDataRetriever(IHttpContextAccessor contextAccessor, IOptions<AuthConfig> options)
         {
             Context = contextAccessor.HttpContext;
             AuthConfig = options.Value;
@@ -18,7 +17,7 @@ namespace MathSite.Common.ApiServiceRequester
         private HttpContext Context { get; }
         private AuthConfig AuthConfig { get; }
 
-        public Cookie GetAuthCookie()
+        public AuthData GetAuthData()
         {
             var cookies = Context.Request.Cookies;
 
@@ -28,14 +27,14 @@ namespace MathSite.Common.ApiServiceRequester
                 return null;
 
             var coockieValue = cookies[_authCookieKey];
-            var siteName = AuthConfig.SiteUrl;
 
-            return new Cookie(_authCookieKey, coockieValue, "/", siteName) {HttpOnly = true};
-        }
-
-        public void SetCookieKey(string key)
-        {
-            _authCookieKey = key;
+            return new AuthData
+            {
+                CookieDomain = AuthConfig.SiteUrl,
+                CookieKey = _authCookieKey,
+                CookiePath = "/",
+                CookieValue = coockieValue
+            };
         }
     }
 }

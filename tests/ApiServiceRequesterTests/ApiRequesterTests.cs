@@ -1,9 +1,9 @@
-using System.Net;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using MathSite.Common.ApiServiceRequester;
 using MathSite.Common.ApiServiceRequester.Abstractions;
 using MathSite.Common.ApiServiceRequester.UriBuilders;
-using MathSite.Common.ApiServiceRequester.Versions;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -29,7 +29,7 @@ namespace ApiServiceRequesterTests
         [Fact]
         public async Task CookieWasNotSet()
         {
-            var testCookieRetriever = new TestCookieRetriever(null);
+            var testCookieRetriever = new TestAuthDataRetriever(null);
             var testApiEndpoint = new TestApiEndpoint(JsonConvert.SerializeObject(true));
             SetRequester(testApiEndpoint, testCookieRetriever);
 
@@ -66,6 +66,20 @@ namespace ApiServiceRequesterTests
         }
 
         [Fact]
+        public async Task CorrectUploadRequest()
+        {
+            var bytes = new byte[] {200, 0, 1, 2, 3};
+
+            var endpoint = new TestApiEndpoint(JsonConvert.SerializeObject(true));
+            SetRequester(endpoint);
+            var result = await _requester.SendDataAsync<bool>(new ServiceMethod("a", "b"), new MemoryStream(bytes));
+            var expected = new List<byte>(bytes).ToArray();
+
+            Assert.Equal(expected, await endpoint.GivenData.ReadAsByteArrayAsync());
+            Assert.True(result);
+        }
+
+        [Fact]
         public async Task CorrectRequestWithCustomClass()
         {
             var expected = new TestClassWithSomeData
@@ -93,10 +107,17 @@ namespace ApiServiceRequesterTests
             Assert.Equal(CookieDomain, gotCookie.Domain);
         }
 
-        private void SetRequester(IApiEndpoint apiEndpoint, IAuthCookieRetriever authCookieRetriever = null)
+        private void SetRequester(IApiEndpoint apiEndpoint, IAuthDataRetriever authDataRetriever = null)
         {
-            var testCookie = new Cookie(CookieName, CookieValue, CookiePath, CookieDomain);
-            var testCookieRetriever = authCookieRetriever ?? new TestCookieRetriever(testCookie);
+            var testCookie = new AuthData
+            {
+                CookieKey = CookieName,
+                CookieValue = CookieValue,
+                CookiePath = CookiePath,
+                CookieDomain = CookieDomain
+            };
+
+            var testCookieRetriever = authDataRetriever ?? new TestAuthDataRetriever(testCookie);
             _requester = new ApiRequester(new ExactUrlServiceUrlBuilder(), testCookieRetriever, new TestApiEndpiontFactory(apiEndpoint));
         }
     }

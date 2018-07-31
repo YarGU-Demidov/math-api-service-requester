@@ -15,11 +15,13 @@ namespace ApiServiceRequesterTests
         }
 
         public Cookie GivenCoockie { get; set; }
+        public HttpContent GivenData { get; set; }
 
         public async Task<HttpResponseMessage> GetAsync(string path, Cookie authCookie,
             IServiceUriBuilder serviceUriBuilder)
         {
             GivenCoockie = authCookie;
+            GivenData = null;
             return new HttpResponseMessage(HttpStatusCode.OK) {Content = new StringContent(_value)};
         }
 
@@ -27,6 +29,7 @@ namespace ApiServiceRequesterTests
             IServiceUriBuilder serviceUriBuilder)
         {
             GivenCoockie = authCookie;
+            GivenData = data;
             return new HttpResponseMessage(HttpStatusCode.OK) {Content = new StringContent(_value)};
         }
     }
