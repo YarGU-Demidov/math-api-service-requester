@@ -22,7 +22,7 @@ namespace ApiServiceRequesterTests
     public class ApiRequesterTests
     {
 
-        private ApiRequester _requester;
+        private IApiRequester _requester;
         private const string CookieName = "TestKey";
         private const string CookieValue = "TestValue";
         private const string CookiePath = "";
@@ -82,7 +82,7 @@ namespace ApiServiceRequesterTests
         }
 
         [Fact]
-        public async Task CorrectRequestWithArray()
+        public async Task CorrectRequestWithArray_WithPostReq()
         {
             var data = new [] {"1", "2", "3", "4"};
             var fieldName = "test";
@@ -94,10 +94,33 @@ namespace ApiServiceRequesterTests
             {
                 {fieldName, data}
             };
-            var result = await _requester.PostAsync<bool>(new ServiceMethod("a", "b"), args);
+            var result = await _requester.PostAsync<bool>(new ServiceMethod("a", "b"), new MethodArgs(args));
 
             var expected = data.Select(s => $"{fieldName}={s}").Aggregate((f, s) => $"{f}&{s}"); // -> test=1&test=2&test=3test=4
             var actual = await ((FormUrlEncodedContent) endpoint.GivenData).ReadAsStringAsync();
+
+            Assert.Equal(expected, actual);
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task CorrectRequestWithArray_WithGetReq()
+        {
+            var data = new [] {"1", "2", "3", "4"};
+            var fieldName = "test";
+            var methodName = "b";
+
+            var endpoint = new TestApiEndpoint(JsonConvert.SerializeObject(true));
+            SetRequester(endpoint);
+
+            var args = new Dictionary<string, IEnumerable<string>>
+            {
+                {fieldName, data}
+            };
+            var result = await _requester.GetAsync<bool>(new ServiceMethod("a", methodName), new MethodArgs(args));
+
+            var expected = methodName + "?" + data.Select(s => $"{fieldName}={s}").Aggregate((f, s) => $"{f}&{s}"); // -> test=1&test=2&test=3test=4
+            var actual = endpoint.Path;
 
             Assert.Equal(expected, actual);
             Assert.True(result);

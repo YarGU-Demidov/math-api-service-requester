@@ -26,14 +26,14 @@ namespace MathSite.Common.ApiServiceRequester
             _authDataRetriever = authDataRetriever;
             _apiEndpointFactory = apiEndpointFactory;
         }
-
-        public async Task<T> GetAsync<T>(ServiceMethod serviceMethod, IEnumerable<KeyValuePair<string, string>> data = null)
+        
+        public async Task<T> GetAsync<T>(ServiceMethod serviceMethod, MethodArgs args = null)
         {
             var authData = _authDataRetriever.GetAuthData();
             var endpoint = _apiEndpointFactory.GetEndpoint(serviceMethod);
             
             var result = await endpoint.GetAsync(
-                BuildUrlWithParams(serviceMethod.MethodName, data), 
+                BuildUrlWithParams(serviceMethod.MethodName, args), 
                 GetCookieFromAuthData(authData),
                 _serviceUriBuilder
             );
@@ -49,14 +49,14 @@ namespace MathSite.Common.ApiServiceRequester
             return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
         }
 
-        public async Task<T> PostAsync<T>(ServiceMethod serviceMethod, IEnumerable<KeyValuePair<string, string>> data = null)
+        public async Task<T> PostAsync<T>(ServiceMethod serviceMethod, MethodArgs args = null)
         {
             var authData = _authDataRetriever.GetAuthData();
             var endpoint = _apiEndpointFactory.GetEndpoint(serviceMethod);
             
             var result = await endpoint.PostAsync(
                 serviceMethod.MethodName, 
-                new FormUrlEncodedContent(data ?? new Dictionary<string, string>()),
+                new FormUrlEncodedContent(args ?? new MethodArgs()),
                 GetCookieFromAuthData(authData), 
                 _serviceUriBuilder
             );
@@ -70,16 +70,6 @@ namespace MathSite.Common.ApiServiceRequester
             }
 
             return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
-        }
-
-        public Task<T> GetAsync<T>(ServiceMethod serviceMethod, IEnumerable<KeyValuePair<string, IEnumerable<string>>> data)
-        {
-            return GetAsync<T>(serviceMethod, ConvertEnumerableValueToString(data));
-        }
-
-        public Task<T> PostAsync<T>(ServiceMethod serviceMethod, IEnumerable<KeyValuePair<string, IEnumerable<string>>> data)
-        {
-            return PostAsync<T>(serviceMethod, ConvertEnumerableValueToString(data));
         }
 
         public async Task<T> SendDataAsync<T>(ServiceMethod serviceMethod, Stream dataStream)
@@ -103,23 +93,6 @@ namespace MathSite.Common.ApiServiceRequester
             }
 
             return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
-        }
-
-        private IEnumerable<KeyValuePair<string, string>> ConvertEnumerableValueToString(IEnumerable<KeyValuePair<string, IEnumerable<string>>> data)
-        {
-            var updatedValues = new List<KeyValuePair<string, string>>();
-
-            foreach (var pair in data)
-            {
-                if (pair.Value == null)
-                    continue;
-
-                updatedValues.AddRange(
-                    pair.Value.Select(val => new KeyValuePair<string, string>(pair.Key, val))
-                );
-            }
-
-            return updatedValues;
         }
 
 
