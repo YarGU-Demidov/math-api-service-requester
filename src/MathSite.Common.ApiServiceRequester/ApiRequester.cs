@@ -27,7 +27,7 @@ namespace MathSite.Common.ApiServiceRequester
             _apiEndpointFactory = apiEndpointFactory;
         }
 
-        public async Task<T> GetAsync<T>(ServiceMethod serviceMethod, Dictionary<string, string> data)
+        public async Task<T> GetAsync<T>(ServiceMethod serviceMethod, IEnumerable<KeyValuePair<string, string>> data = null)
         {
             var authData = _authDataRetriever.GetAuthData();
             var endpoint = _apiEndpointFactory.GetEndpoint(serviceMethod);
@@ -49,7 +49,7 @@ namespace MathSite.Common.ApiServiceRequester
             return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
         }
 
-        public async Task<T> PostAsync<T>(ServiceMethod serviceMethod, Dictionary<string, string> data)
+        public async Task<T> PostAsync<T>(ServiceMethod serviceMethod, IEnumerable<KeyValuePair<string, string>> data = null)
         {
             var authData = _authDataRetriever.GetAuthData();
             var endpoint = _apiEndpointFactory.GetEndpoint(serviceMethod);
@@ -70,6 +70,16 @@ namespace MathSite.Common.ApiServiceRequester
             }
 
             return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
+        }
+
+        public Task<T> GetAsync<T>(ServiceMethod serviceMethod, IEnumerable<KeyValuePair<string, IEnumerable<string>>> data)
+        {
+            return GetAsync<T>(serviceMethod, ConvertEnumerableValueToString(data));
+        }
+
+        public Task<T> PostAsync<T>(ServiceMethod serviceMethod, IEnumerable<KeyValuePair<string, IEnumerable<string>>> data)
+        {
+            return PostAsync<T>(serviceMethod, ConvertEnumerableValueToString(data));
         }
 
         public async Task<T> SendDataAsync<T>(ServiceMethod serviceMethod, Stream dataStream)
@@ -95,10 +105,31 @@ namespace MathSite.Common.ApiServiceRequester
             return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
         }
 
-
-        private string BuildUrlWithParams(string url, Dictionary<string, string> data)
+        private IEnumerable<KeyValuePair<string, string>> ConvertEnumerableValueToString(IEnumerable<KeyValuePair<string, IEnumerable<string>>> data)
         {
-            if (data == null || data.Count == 0)
+            var updatedValues = new List<KeyValuePair<string, string>>();
+
+            foreach (var pair in data)
+            {
+                if (pair.Value == null)
+                    continue;
+
+                updatedValues.AddRange(
+                    pair.Value.Select(val => new KeyValuePair<string, string>(pair.Key, val))
+                );
+            }
+
+            return updatedValues;
+        }
+
+
+        private string BuildUrlWithParams(string url, IEnumerable<KeyValuePair<string, string>> incomingData)
+        {
+            var data = incomingData == null 
+                ? new List<KeyValuePair<string, string>>() 
+                : incomingData.ToList();
+
+            if (!data.Any())
                 return url;
 
             return url + "?" + data.Select(pair => $"{pair.Key}={pair.Value}").Aggregate((f, s) => $"{f}&{s}");

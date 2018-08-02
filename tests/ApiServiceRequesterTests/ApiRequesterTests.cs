@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using MathSite.Common.ApiServiceRequester;
 using MathSite.Common.ApiServiceRequester.Abstractions;
@@ -33,7 +35,7 @@ namespace ApiServiceRequesterTests
             var testApiEndpoint = new TestApiEndpoint(JsonConvert.SerializeObject(true));
             SetRequester(testApiEndpoint, testCookieRetriever);
 
-            await _requester.GetAsync<bool>(new ServiceMethod("a", "b"), null);
+            await _requester.GetAsync<bool>(new ServiceMethod("a", "b"));
 
             var gotCookie = testApiEndpoint.GivenCoockie;
 
@@ -46,7 +48,7 @@ namespace ApiServiceRequesterTests
             var testApiEndpoint = new TestApiEndpoint(JsonConvert.SerializeObject(true));
             SetRequester(testApiEndpoint);
             
-            await _requester.GetAsync<bool>(new ServiceMethod("a", "b"), null);
+            await _requester.GetAsync<bool>(new ServiceMethod("a", "b"));
 
             var gotCookie = testApiEndpoint.GivenCoockie;
 
@@ -60,7 +62,7 @@ namespace ApiServiceRequesterTests
         public async Task CorrectRequest()
         {
             SetRequester(new TestApiEndpoint(JsonConvert.SerializeObject(true)));
-            var result = await _requester.GetAsync<bool>(new ServiceMethod("a", "b"), null);
+            var result = await _requester.GetAsync<bool>(new ServiceMethod("a", "b"));
 
             Assert.True(result);
         }
@@ -80,6 +82,28 @@ namespace ApiServiceRequesterTests
         }
 
         [Fact]
+        public async Task CorrectRequestWithArray()
+        {
+            var data = new [] {"1", "2", "3", "4"};
+            var fieldName = "test";
+
+            var endpoint = new TestApiEndpoint(JsonConvert.SerializeObject(true));
+            SetRequester(endpoint);
+
+            var args = new Dictionary<string, IEnumerable<string>>
+            {
+                {fieldName, data}
+            };
+            var result = await _requester.PostAsync<bool>(new ServiceMethod("a", "b"), args);
+
+            var expected = data.Select(s => $"{fieldName}={s}").Aggregate((f, s) => $"{f}&{s}"); // -> test=1&test=2&test=3test=4
+            var actual = await ((FormUrlEncodedContent) endpoint.GivenData).ReadAsStringAsync();
+
+            Assert.Equal(expected, actual);
+            Assert.True(result);
+        }
+
+        [Fact]
         public async Task CorrectRequestWithCustomClass()
         {
             var expected = new TestClassWithSomeData
@@ -91,7 +115,7 @@ namespace ApiServiceRequesterTests
             };
             var testApiEndpoint = new TestApiEndpoint(JsonConvert.SerializeObject(expected));
             SetRequester(testApiEndpoint);
-            var result = await _requester.GetAsync<TestClassWithSomeData>(new ServiceMethod("a", "b"), null);
+            var result = await _requester.GetAsync<TestClassWithSomeData>(new ServiceMethod("a", "b"));
 
             Assert.NotNull(result);
             Assert.Equal("test valaue", result.Data);
