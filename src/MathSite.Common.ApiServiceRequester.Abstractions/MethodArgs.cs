@@ -1,30 +1,26 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace MathSite.Common.ApiServiceRequester.Abstractions
 {
     public class MethodArgs : IEnumerable<KeyValuePair<string, string>>
     {
-        private readonly List<KeyValuePair<string, string>> _args = new List<KeyValuePair<string, string>>();
+        private readonly List<KeyValuePair<string, string>> _args;
 
         public MethodArgs()
         {
+            _args = new List<KeyValuePair<string, string>>();
         }
 
         public MethodArgs(IDictionary<string, string> args) : this()
         {
-            foreach (var arg in args)
-            {
-                Add(arg);
-            }
+            AddRange(args);
         }
 
         public MethodArgs(IDictionary<string, IEnumerable<string>> args) : this()
         {
-            foreach (var arg in args)
-            {
-                Add(arg);
-            }
+            AddRange(args);
         }
 
         public void Add(string key, string value)
@@ -50,11 +46,29 @@ namespace MathSite.Common.ApiServiceRequester.Abstractions
             }
         }
 
+        public void AddRange(IDictionary<string, string> args)
+        {
+            foreach (var arg in args)
+            {
+                Add(arg);
+            }
+        }
+
+        public void AddRange(IDictionary<string, IEnumerable<string>> args)
+        {
+            foreach (var arg in args)
+            {
+                Add(arg);
+            }
+        }
+
+        [Obsolete("Use constructor.", true)]
         public static implicit operator MethodArgs (Dictionary<string, string> args)
         {
             return new MethodArgs(args);
         }
 
+        [Obsolete("Use constructor.", true)]
         public static implicit operator MethodArgs (Dictionary<string, IEnumerable<string>> args)
         {
             return new MethodArgs(args);

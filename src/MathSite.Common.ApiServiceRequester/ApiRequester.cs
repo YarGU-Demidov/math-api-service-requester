@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using MathSite.Common.ApiServiceRequester.Abstractions;
 using MathSite.Common.ApiServiceRequester.Abstractions.Exceptions;
@@ -49,14 +50,41 @@ namespace MathSite.Common.ApiServiceRequester
             return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
         }
 
-        public async Task<T> PostAsync<T>(ServiceMethod serviceMethod, MethodArgs args = null)
+        public async Task<T> PostAsync<T>(ServiceMethod serviceMethod, MethodArgs args = null, IDictionary<string, IEnumerable<Stream>> files = null)
         {
             var authData = _authDataRetriever.GetAuthData();
             var endpoint = _apiEndpointFactory.GetEndpoint(serviceMethod);
+
+            #region надо тестить!
+
+            var content = new MultipartFormDataContent
+            {
+                new FormUrlEncodedContent(args ?? new MethodArgs())
+            };
+
+            foreach (var filesPair in files ?? new Dictionary<string, IEnumerable<Stream>>())
+            {
+                var filesData = new MultipartContent();
+                filesPair.Value
+                    .ToList()
+                    .ForEach(stream =>
+                    {
+                        var streamContent = new StreamContent(stream);
+                        streamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+                        filesData.Add(streamContent);
+                    });
+
+                filesData.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+                filesData.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+
+                content.Add(filesData, filesPair.Key);
+            }
+
+            #endregion
             
             var result = await endpoint.PostAsync(
                 serviceMethod.MethodName, 
-                new FormUrlEncodedContent(args ?? new MethodArgs()),
+                content,
                 GetCookieFromAuthData(authData), 
                 _serviceUriBuilder
             );
@@ -71,30 +99,6 @@ namespace MathSite.Common.ApiServiceRequester
 
             return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
         }
-
-        public async Task<T> SendDataAsync<T>(ServiceMethod serviceMethod, Stream dataStream)
-        {
-            var authData = _authDataRetriever.GetAuthData();
-            var endpoint = _apiEndpointFactory.GetEndpoint(serviceMethod);
-            
-            var result = await endpoint.PostAsync(
-                serviceMethod.MethodName, 
-                new StreamContent(dataStream),
-                GetCookieFromAuthData(authData), 
-                _serviceUriBuilder
-            );
-          
-            if (!result.IsSuccessStatusCode)
-            {
-                throw new RequestFailedException(
-                    $"Attempt to upload file to URL \"{result.RequestMessage.RequestUri}\" has failed.",
-                    result
-                );
-            }
-
-            return JsonConvert.DeserializeObject<T>(await result.Content.ReadAsStringAsync());
-        }
-
 
         private string BuildUrlWithParams(string url, IEnumerable<KeyValuePair<string, string>> incomingData)
         {

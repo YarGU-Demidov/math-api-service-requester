@@ -15,7 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UriBuildersTests", "tests\U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiServiceRequesterTests", "tests\ApiServiceRequesterTests\ApiServiceRequesterTests.csproj", "{DB5AA66E-3AC3-4B1A-8C03-C3BB381DF6C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionsTests", "tests\VersionsTests\VersionsTests.csproj", "{12165262-568C-4E56-B8FD-AA41130156FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VersionsTests", "tests\VersionsTests\VersionsTests.csproj", "{12165262-568C-4E56-B8FD-AA41130156FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C12A9D03-E8E3-4DCD-A5E8-167A0CB06AD0}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet.config = NuGet.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

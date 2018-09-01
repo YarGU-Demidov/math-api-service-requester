@@ -74,7 +74,13 @@ namespace ApiServiceRequesterTests
 
             var endpoint = new TestApiEndpoint(JsonConvert.SerializeObject(true));
             SetRequester(endpoint);
-            var result = await _requester.SendDataAsync<bool>(new ServiceMethod("a", "b"), new MemoryStream(bytes));
+            
+            var files = new Dictionary<string, IEnumerable<Stream>>
+            {
+                {"data", new[] {new MemoryStream(bytes)}}
+            };
+
+            var result = await _requester.PostAsync<bool>(new ServiceMethod("a", "b"), null, files);
             var expected = new List<byte>(bytes).ToArray();
 
             Assert.Equal(expected, await endpoint.GivenData.ReadAsByteArrayAsync());
