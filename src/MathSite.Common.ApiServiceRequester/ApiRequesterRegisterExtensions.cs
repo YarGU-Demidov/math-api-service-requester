@@ -9,81 +9,81 @@ namespace MathSite.Common.ApiServiceRequester
 {
     public static class ApiRequesterRegisterExtensions
     {
-        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder>(this IServiceCollection services, IConfiguration authConfigconfigurationSource)
+        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder>(this IServiceCollection services, IConfiguration authConfigurationSource)
             where TDomainServiceUriBuilder : class, IServiceUriBuilder
         {
-            return AddApiRequester<TDomainServiceUriBuilder, ApiEndpointFactory, AuthDataRetriever>(services, authConfigconfigurationSource);
+            return AddApiRequester<TDomainServiceUriBuilder, ApiEndpointFactory, AuthDataRetriever>(services, authConfigurationSource);
         }
         
-        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder>(this IServiceCollection services, IConfiguration authConfigconfigurationSource, string apiVersion)
+        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder>(this IServiceCollection services, IConfiguration authConfigurationSource, string apiVersion)
             where TDomainServiceUriBuilder : class, IServiceUriBuilder
         {
-            return AddApiRequester<TDomainServiceUriBuilder, ApiEndpointFactory, AuthDataRetriever>(services, authConfigconfigurationSource, apiVersion);
+            return AddApiRequester<TDomainServiceUriBuilder, ApiEndpointFactory, AuthDataRetriever>(services, authConfigurationSource, apiVersion);
         }
         
-        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder>(this IServiceCollection services, IConfiguration authConfigconfigurationSource, Version apiVersion)
+        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder>(this IServiceCollection services, IConfiguration authConfigurationSource, Version apiVersion)
             where TDomainServiceUriBuilder : class, IServiceUriBuilder
         {
-            return AddApiRequester<TDomainServiceUriBuilder, ApiEndpointFactory, AuthDataRetriever>(services, authConfigconfigurationSource, apiVersion);
+            return AddApiRequester<TDomainServiceUriBuilder, ApiEndpointFactory, AuthDataRetriever>(services, authConfigurationSource, apiVersion);
         }
         
 
 
-        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigconfigurationSource)
+        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigurationSource)
             where TDomainServiceUriBuilder : class, IServiceUriBuilder
             where TAuthDataRetriever : class, IAuthDataRetriever
         {
-            return RegisterDefaultServices<TDomainServiceUriBuilder, ApiEndpointFactory, TAuthDataRetriever>(services, authConfigconfigurationSource)
+            return RegisterDefaultServices<TDomainServiceUriBuilder, ApiEndpointFactory, TAuthDataRetriever>(services, authConfigurationSource)
                 .AddSingleton(new AnyApiVersionProvider());
         }
         
-        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigconfigurationSource, string apiVersion)
+        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigurationSource, string apiVersion)
             where TDomainServiceUriBuilder : class, IServiceUriBuilder
             where TAuthDataRetriever : class, IAuthDataRetriever
         {
-            return RegisterDefaultServices<TDomainServiceUriBuilder, ApiEndpointFactory, TAuthDataRetriever>(services, authConfigconfigurationSource)
+            return RegisterDefaultServices<TDomainServiceUriBuilder, ApiEndpointFactory, TAuthDataRetriever>(services, authConfigurationSource)
                 .AddSingleton(new SelectedApiVersionProvider(apiVersion));
         }
         
-        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigconfigurationSource, Version apiVersion)
+        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigurationSource, Version apiVersion)
             where TDomainServiceUriBuilder : class, IServiceUriBuilder
             where TAuthDataRetriever : class, IAuthDataRetriever
         {
-            return RegisterDefaultServices<TDomainServiceUriBuilder, ApiEndpointFactory, TAuthDataRetriever>(services, authConfigconfigurationSource)
+            return RegisterDefaultServices<TDomainServiceUriBuilder, ApiEndpointFactory, TAuthDataRetriever>(services, authConfigurationSource)
                 .AddSingleton(new SelectedApiVersionProvider(apiVersion));
         }
         
         
-        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigconfigurationSource)
+        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigurationSource)
             where TDomainServiceUriBuilder : class, IServiceUriBuilder
             where TAuthDataRetriever : class, IAuthDataRetriever
             where TApiEndpointFactory : class, IApiEndpointFactory
         {
-            return RegisterDefaultServices<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(services, authConfigconfigurationSource)
+            return RegisterDefaultServices<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(services, authConfigurationSource)
                 .AddSingleton(new AnyApiVersionProvider());
         }
         
-        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigconfigurationSource, string apiVersion)
+        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigurationSource, string apiVersion)
             where TDomainServiceUriBuilder : class, IServiceUriBuilder
             where TAuthDataRetriever : class, IAuthDataRetriever
             where TApiEndpointFactory : class, IApiEndpointFactory
         {
-            return RegisterDefaultServices<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(services, authConfigconfigurationSource)
+            return RegisterDefaultServices<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(services, authConfigurationSource)
                 .AddSingleton(new SelectedApiVersionProvider(apiVersion));
         }
         
-        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigconfigurationSource, Version apiVersion)
+        public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigurationSource, Version apiVersion)
             where TDomainServiceUriBuilder : class, IServiceUriBuilder
             where TAuthDataRetriever : class, IAuthDataRetriever
             where TApiEndpointFactory : class, IApiEndpointFactory
         {
-            return RegisterDefaultServices<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(services, authConfigconfigurationSource)
+            return RegisterDefaultServices<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(services, authConfigurationSource)
                 .AddSingleton(new SelectedApiVersionProvider(apiVersion));
         }
 
         
         
-        private static IServiceCollection RegisterDefaultServices<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(IServiceCollection services, IConfiguration authConfigconfigurationSource)
+        private static IServiceCollection RegisterDefaultServices<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(IServiceCollection services, IConfiguration authConfigurationSource)
             where TDomainServiceUriBuilder : class, IServiceUriBuilder
             where TAuthDataRetriever : class, IAuthDataRetriever
             where TApiEndpointFactory : class, IApiEndpointFactory
@@ -96,7 +96,7 @@ namespace MathSite.Common.ApiServiceRequester
                 .AddSingleton<IServiceUriBuilder, TDomainServiceUriBuilder>()
                 .AddSingleton<IApiEndpointFactory, TApiEndpointFactory>()
                 .AddOptions()
-                .Configure<AuthConfig>(authConfigconfigurationSource);
+                .Configure<AuthConfig>(authConfigurationSource);
         }
     }
 }
