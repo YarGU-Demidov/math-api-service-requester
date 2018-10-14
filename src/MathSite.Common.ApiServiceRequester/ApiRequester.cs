@@ -57,27 +57,38 @@ namespace MathSite.Common.ApiServiceRequester
 
             #region надо тестить!
 
-            var content = new MultipartFormDataContent
+            HttpContent content;
+
+            if (files != null)
             {
-                new FormUrlEncodedContent(args ?? new MethodArgs())
-            };
+                var dataContent = new MultipartFormDataContent
+                {
+                    new FormUrlEncodedContent(args ?? new MethodArgs())
+                };
 
-            foreach (var filesPair in files ?? new Dictionary<string, IEnumerable<Stream>>())
+                foreach (var filesPair in files)
+                {
+                    var filesData = new MultipartContent();
+                    filesPair.Value
+                        .ToList()
+                        .ForEach(stream =>
+                        {
+                            var streamContent = new StreamContent(stream);
+                            streamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+                            filesData.Add(streamContent);
+                        });
+
+                    filesData.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+                    filesData.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+
+                    dataContent.Add(filesData, filesPair.Key);
+                }
+
+                content = dataContent;
+            }
+            else
             {
-                var filesData = new MultipartContent();
-                filesPair.Value
-                    .ToList()
-                    .ForEach(stream =>
-                    {
-                        var streamContent = new StreamContent(stream);
-                        streamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-                        filesData.Add(streamContent);
-                    });
-
-                filesData.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-                filesData.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
-
-                content.Add(filesData, filesPair.Key);
+                content = new FormUrlEncodedContent(args ?? new MethodArgs());
             }
 
             #endregion
@@ -109,7 +120,7 @@ namespace MathSite.Common.ApiServiceRequester
             if (!data.Any())
                 return url;
 
-            return url + "?" + data.Select(pair => $"{pair.Key}={pair.Value}").Aggregate((f, s) => $"{f}&{s}");
+            return url + "?" + data.Select(pair => $"{WebUtility.UrlEncode(pair.Key)}={WebUtility.UrlEncode(pair.Value)}").Aggregate((f, s) => $"{f}&{s}");
         }
 
         private Cookie GetCookieFromAuthData(AuthData authData)
