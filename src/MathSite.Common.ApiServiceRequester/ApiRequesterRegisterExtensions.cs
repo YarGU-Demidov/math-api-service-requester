@@ -34,7 +34,7 @@ namespace MathSite.Common.ApiServiceRequester
             where TAuthDataRetriever : class, IAuthDataRetriever
         {
             return RegisterDefaultServices<TDomainServiceUriBuilder, ApiEndpointFactory, TAuthDataRetriever>(services, authConfigurationSource)
-                .AddSingleton(new AnyApiVersionProvider());
+                .AddSingleton<IApiVersionProvider>(new AnyApiVersionProvider());
         }
         
         public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigurationSource, string apiVersion)
@@ -42,7 +42,7 @@ namespace MathSite.Common.ApiServiceRequester
             where TAuthDataRetriever : class, IAuthDataRetriever
         {
             return RegisterDefaultServices<TDomainServiceUriBuilder, ApiEndpointFactory, TAuthDataRetriever>(services, authConfigurationSource)
-                .AddSingleton(new SelectedApiVersionProvider(apiVersion));
+                .AddSingleton<IApiVersionProvider>(new SelectedApiVersionProvider(apiVersion));
         }
         
         public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigurationSource, Version apiVersion)
@@ -50,7 +50,7 @@ namespace MathSite.Common.ApiServiceRequester
             where TAuthDataRetriever : class, IAuthDataRetriever
         {
             return RegisterDefaultServices<TDomainServiceUriBuilder, ApiEndpointFactory, TAuthDataRetriever>(services, authConfigurationSource)
-                .AddSingleton(new SelectedApiVersionProvider(apiVersion));
+                .AddSingleton<IApiVersionProvider>(new SelectedApiVersionProvider(apiVersion));
         }
         
         
@@ -60,7 +60,7 @@ namespace MathSite.Common.ApiServiceRequester
             where TApiEndpointFactory : class, IApiEndpointFactory
         {
             return RegisterDefaultServices<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(services, authConfigurationSource)
-                .AddSingleton(new AnyApiVersionProvider());
+                .AddSingleton<IApiVersionProvider>(new AnyApiVersionProvider());
         }
         
         public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigurationSource, string apiVersion)
@@ -69,7 +69,7 @@ namespace MathSite.Common.ApiServiceRequester
             where TApiEndpointFactory : class, IApiEndpointFactory
         {
             return RegisterDefaultServices<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(services, authConfigurationSource)
-                .AddSingleton(new SelectedApiVersionProvider(apiVersion));
+                .AddSingleton<IApiVersionProvider>(new SelectedApiVersionProvider(apiVersion));
         }
         
         public static IServiceCollection AddApiRequester<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(this IServiceCollection services, IConfiguration authConfigurationSource, Version apiVersion)
@@ -78,7 +78,7 @@ namespace MathSite.Common.ApiServiceRequester
             where TApiEndpointFactory : class, IApiEndpointFactory
         {
             return RegisterDefaultServices<TDomainServiceUriBuilder, TApiEndpointFactory, TAuthDataRetriever>(services, authConfigurationSource)
-                .AddSingleton(new SelectedApiVersionProvider(apiVersion));
+                .AddSingleton<IApiVersionProvider>(new SelectedApiVersionProvider(apiVersion));
         }
 
         
