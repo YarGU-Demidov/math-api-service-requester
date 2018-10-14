@@ -89,12 +89,12 @@ namespace MathSite.Common.ApiServiceRequester
             where TApiEndpointFactory : class, IApiEndpointFactory
         {
             services.AddHttpContextAccessor()
-                .TryAddSingleton<IAuthDataRetriever, TAuthDataRetriever>();
+                .AddScoped<IAuthDataRetriever, TAuthDataRetriever>();
 
             return services
                 .AddScoped<IApiRequester, ApiRequester>()
-                .AddSingleton<IServiceUriBuilder, TDomainServiceUriBuilder>()
-                .AddSingleton<IApiEndpointFactory, TApiEndpointFactory>()
+                .AddScoped<IServiceUriBuilder, TDomainServiceUriBuilder>()
+                .AddScoped<IApiEndpointFactory, TApiEndpointFactory>()
                 .AddOptions()
                 .Configure<AuthConfig>(authConfigurationSource);
         }
