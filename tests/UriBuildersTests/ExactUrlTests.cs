@@ -46,6 +46,25 @@ namespace UriBuildersTests
         }
 
         [Fact]
+        public void BuildsCorrectUriWithParams()
+        {
+            const string expected = "https://localhost:8000/api/path/123?var=asd&var1=qwe";
+
+            var config = new ApiEndpointConfiguration
+            {
+                EndpointAddress = "https://localhost:8000/api"
+            };
+
+            var actual = _uriBuilder.FromPath(
+                "path/123?var=asd&var1=qwe", 
+                config, 
+                new SelectedApiVersionProvider("1.0")
+            ).ToString();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void ThrowIfNull()
         {
             Assert.Throws<ArgumentNullException>(() => { _uriBuilder.FromPath("/", new ApiEndpointConfiguration(), new AnyApiVersionProvider()); });

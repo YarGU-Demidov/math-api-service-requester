@@ -22,11 +22,18 @@ namespace MathSite.Common.ApiServiceRequester.UriBuilders
                 : $"/v{apiVersion}";
 
             path = path[0] == '/' ? path : $"/{path}";
+
+            var separatedPath = path.Split(new[] {'?'}, StringSplitOptions.RemoveEmptyEntries);
+            var pathWithoutQuery = separatedPath[0];
+            var query = separatedPath.Length == 2 
+                ? separatedPath[1] 
+                : "";
             
             var uriBuilder = new UriBuilder(_authConfig.SiteUrl)
             {
                 Scheme = _authConfig.UseHttps ? "https" : "http",
-                Path = $"{apiVersionPath}{path}"
+                Path = $"{apiVersionPath}{pathWithoutQuery}",
+                Query = query
             };
             
             uriBuilder.Host = $"{endpointConfiguration.EndpointAlias}.{uriBuilder.Host}";

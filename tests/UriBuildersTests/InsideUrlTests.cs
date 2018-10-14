@@ -51,5 +51,20 @@ namespace UriBuildersTests
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void BuildsCorrectUriWithParams()
+        {
+            const string expected = "http://localhost:8000/api/v1/test/path?var=asd&var1=qwe";
+            var apiVersion = new Version(1, 0);
+
+            var actual = _uriBuilder.FromPath(
+                "path?var=asd&var1=qwe", 
+                new ApiEndpointConfiguration("test"), 
+                new SelectedApiVersionProvider(apiVersion)
+            ).ToString();
+
+            Assert.Equal(expected, actual);
+        }
     }
 }
